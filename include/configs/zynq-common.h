@@ -219,9 +219,9 @@
 #  define CONFIG_ENV_IS_NOWHERE
 # endif
 
-# define CONFIG_ENV_SECT_SIZE		CONFIG_ENV_SIZE
+# define CONFIG_ENV_SECT_SIZE		(4*1024)
 # ifndef CONFIG_ENV_OFFSET
-#  define CONFIG_ENV_OFFSET		0xE0000
+#  define CONFIG_ENV_OFFSET		0x0E0000
 # endif
 #endif
 
@@ -256,9 +256,9 @@
 			"fi; " \
 		"fi; \0" \
 	"mmc_loadbit=echo Loading bitstream from SD/MMC/eMMC to RAM.. && " \
-		"mmcinfo && " \
+		"get_bitstream_name && mmcinfo && " \
 		"load mmc 0 ${loadbit_addr} ${bitstream_image} && " \
-		"fpga load 0 ${loadbit_addr} ${filesize}\0" \
+		"fpga loadb 0 ${loadbit_addr} ${filesize}\0" \
 	"norboot=echo Copying Linux from NOR flash to RAM... && " \
 		"cp.b 0xE2100000 ${kernel_load_address} ${kernel_size} && " \
 		"cp.b 0xE2600000 ${devicetree_load_address} ${devicetree_size} && " \
@@ -286,8 +286,7 @@
 			"echo Copying Linux from SD to RAM... && " \
 			"load mmc 0 ${kernel_load_address} ${kernel_image} && " \
 			"load mmc 0 ${devicetree_load_address} ${devicetree_image} && " \
-			"load mmc 0 ${ramdisk_load_address} ${ramdisk_image} && " \
-			"bootm ${kernel_load_address} ${ramdisk_load_address} ${devicetree_load_address}; " \
+			"bootm ${kernel_load_address} - ${devicetree_load_address}; " \
 		"fi\0" \
 	"usbboot=if usb start; then " \
 			"run uenvboot; " \

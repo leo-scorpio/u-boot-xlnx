@@ -27,7 +27,6 @@ void *mmap(void *addr, size_t len, int prot, int flags, int fd, int offset)
 	void *map = NULL;
 	HANDLE handle = INVALID_HANDLE_VALUE;
 	DWORD cfm_flags = 0, mvf_flags = 0;
-
 	switch (prot) {
 	case PROT_READ | PROT_WRITE:
 		cfm_flags = PAGE_READWRITE;
@@ -47,13 +46,13 @@ void *mmap(void *addr, size_t len, int prot, int flags, int fd, int offset)
 
 	handle = CreateFileMappingA((HANDLE) _get_osfhandle(fd), NULL,
 				cfm_flags, HIDWORD(len), LODWORD(len), NULL);
+
 	if (!handle)
 		return MAP_FAILED;
 
 	map = MapViewOfFile(handle, mvf_flags, HIDWORD(offset),
 			LODWORD(offset), len);
 	CloseHandle(handle);
-
 	if (!map)
 		return MAP_FAILED;
 
