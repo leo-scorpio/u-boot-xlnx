@@ -126,8 +126,8 @@ static void _serial_putc(struct udevice *dev, char ch)
 	do {
 		err = ops->putc(dev, ch);
 	} while (err == -EAGAIN);
-	if (ch == '\n')
-		_serial_putc(dev, '\r');
+	//if (ch == '\n')
+		//_serial_putc(dev, '\r');
 }
 
 static void _serial_puts(struct udevice *dev, const char *str)

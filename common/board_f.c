@@ -843,6 +843,7 @@ static init_fnc_t init_sequence_f[] = {
 	/* TODO: can this go into arch_cpu_init()? */
 	probecpu,
 #endif
+
 #if defined(CONFIG_X86) && defined(CONFIG_HAVE_FSP)
 	x86_fsp_init,
 #endif

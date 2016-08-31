@@ -845,6 +845,7 @@ OBJCOPYFLAGS_u-boot.srec := -O srec
 
 u-boot.hex u-boot.srec: u-boot FORCE
 	$(call if_changed,objcopy)
+	cp -f u-boot ~/Desktop/wpZynq/BootLoader/u-boot.elf
 
 OBJCOPYFLAGS_u-boot-nodtb.bin := -O binary \
 		$(if $(CONFIG_X86_RESET_VECTOR),-R .start16 -R .resetvec)
@@ -1158,7 +1159,7 @@ quiet_cmd_u-boot__ ?= LD      $@
       cmd_u-boot__ ?= $(LD) $(LDFLAGS) $(LDFLAGS_u-boot) -o $@ \
       -T u-boot.lds $(u-boot-init)                             \
       --start-group $(u-boot-main) --end-group                 \
-      $(PLATFORM_LIBS) -Map u-boot.map
+      $(PLATFORM_LIBS) -Map u-boot.map 
 
 quiet_cmd_smap = GEN     common/system_map.o
 cmd_smap = \
@@ -1169,6 +1170,7 @@ cmd_smap = \
 
 u-boot:	$(u-boot-init) $(u-boot-main) u-boot.lds FORCE
 	$(call if_changed,u-boot__)
+	
 ifeq ($(CONFIG_KALLSYMS),y)
 	$(call cmd,smap)
 	$(call cmd,u-boot__) common/system_map.o
